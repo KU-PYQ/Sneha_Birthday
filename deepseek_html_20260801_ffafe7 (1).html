@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 Happy Birthday Sneha! 🎂</title>
+    <style>
+        :root {
+            --love: #ff4d6d;
+            --deep-pink: #e63946;
+            --soft-pink: #ffb3c6;
+            --rose: #ff8fa3;
+            --gold: #ffd166;
+            --white: #fff0f3;
+            --magenta: #c77dff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', 'Poppins', 'Noto Sans Devanagari', cursive;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffe6eb 0%, #ffd4e0 25%, #fce4ec 50%, #ffccd5 75%, #ffe0e6 100%);
+            background-size: 400% 400%;
+            animation: bgShift 20s ease infinite;
+            overflow-x: hidden;
+            overflow-y: auto;
+            position: relative;
+            cursor: default;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        #confettiCanvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .main-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        /* ========== INITIAL CARD ========== */
+        .love-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px 35px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 77, 109, 0.3);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            max-width: 420px;
+            width: 90%;
+            animation: cardPulse 2.5s ease-in-out infinite;
+            z-index: 10;
+        }
+        .love-card::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 33px;
+            padding: 3px;
+            background: linear-gradient(135deg, #ff4d6d, #ff8fa3, #ffd166, #ff4d6d);
+            background-size: 300% 300%;
+            animation: borderGlow 3s ease infinite;
+            z-index: -1;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+        }
+        @keyframes borderGlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes cardPulse {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .love-card:hover { transform: translateY(-5px) scale(1.02); }
+        .love-card .icon-row {
+            font-size: 60px;
+            margin-bottom: 10px;
+            animation: heartbeat 1.2s ease-in-out infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.15); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+        }
+        .love-card .name-display {
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff4d6d, #c77dff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 8px 0;
+        }
+        .love-card .subtitle {
+            font-size: 1.1em;
+            color: #666;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+        .love-card .by-alok {
+            font-size: 0.9em;
+            color: #ff4d6d;
+            margin-top: 4px;
+            font-weight: 600;
+        }
+        .love-card .click-hint {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 30px;
+            background: linear-gradient(135deg, #ff4d6d, #e63946);
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            animation: glowPulse 2s ease-in-out infinite;
+            box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5);
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 8px 25px rgba(255, 77, 109, 0.5); }
+            50% { box-shadow: 0 12px 35px rgba(255, 77, 109, 0.8); }
+        }
+        .love-card.hidden {
+            opacity: 0;
+            transform: scale(0.8) translateY(30px);
+            pointer-events: none;
+            transition: all 0.6s ease;
+        }
+
+        /* ========== CENTERED BIRTHDAY MESSAGE with PHOTO ========== */
+        .romantic-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 8;
+            width: 100%;
+            max-width: 90%;
+        }
+        .romantic-message.revealed {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+            pointer-events: auto;
+        }
+        .sneha-photo-container {
+            display: inline-block;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid white;
+            box-shadow: 0 8px 30px rgba(255, 77, 109, 0.4);
+            margin-bottom: 20px;
+            animation: photoPop 0.8s ease-out;
+        }
+        @keyframes photoPop {
+            0% { transform: scale(0); }
+            70% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .sneha-photo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .romantic-message .big-heart {
+            font-size: 60px;
+            animation: bigHeartbeat 0.8s ease-in-out infinite alternate;
+            display: block;
+            margin-top: 10px;
+        }
+        @keyframes bigHeartbeat {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+        .romantic-message .happy-text {
+            font-size: 3em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff4d6d, #e63946, #ff4d6d);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s ease infinite;
+            letter-spacing: 2px;
+            margin: 10px 0;
+        }
+        .romantic-message .name-big {
+            font-size: 4em;
+            font-weight: 900;
+            color: #c77dff;
+            text-shadow: 0 4px 25px rgba(199, 125, 255, 0.6);
+            animation: nameGlow 2s ease-in-out infinite;
+        }
+        .romantic-message .date-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd166, #ffb703);
+            color: #5c3d00;
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1em;
+            margin-top: 12px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(255, 209, 102, 0.5);
+        }
+        .romantic-message .balloon-hint {
+            margin-top: 24px;
+            color: #888;
+            font-size: 1em;
+            font-weight: 500;
+            animation: fadeHint 2s ease-in-out infinite;
+        }
+        .romantic-message .alok-love {
+            margin-top: 12px;
+            font-size: 1.1em;
+            color: #ff4d6d;
+            font-weight: 700;
+            opacity: 0;
+            animation: revealLove 0.8s ease-out forwards 1.5s;
+        }
+        @keyframes revealLove {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(10px); }
+        }
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes nameGlow {
+            0%, 100% { text-shadow: 0 4px 25px rgba(199, 125, 255, 0.6); }
+            50% { text-shadow: 0 8px 35px rgba(199, 125, 255, 0.9); }
+        }
+        @keyframes fadeHint {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ========== BALLOON BUTTON ========== */
+        .balloon-action-btn {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            background: linear-gradient(135deg, #ff4d6d, #e63946);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.6);
+            cursor: pointer;
+            display: none;
+            animation: floatBtn 2.5s ease-in-out infinite;
+            transition: transform 0.2s;
+        }
+        .balloon-action-btn.visible { display: inline-block; }
+        @keyframes floatBtn {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-6px); }
+        }
+        .balloon-action-btn:hover { transform: translateX(-50%) translateY(-3px) scale(1.03); }
+        .balloon-action-btn:active { transform: translateX(-50%) scale(0.96); }
+
+        /* ========== BALLOONS ========== */
+        .balloons-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 3;
+        }
+        .balloons-container.active { pointer-events: auto; }
+
+        .balloon-wrapper {
+            position: absolute;
+            bottom: -220px;
+            pointer-events: auto;
+            cursor: pointer;
+            animation: floatUp linear forwards;
+            z-index: 4;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(calc(-100vh - 300px)); }
+        }
+        .balloon-bob { animation: wobble ease-in-out infinite; }
+        @keyframes wobble {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(12px); }
+            75% { transform: translateX(-12px); }
+        }
+        .balloon-body {
+            width: 70px; height: 88px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            position: relative;
+            box-shadow: inset -8px -8px 20px rgba(0,0,0,0.15), inset 4px 4px 15px rgba(255,255,255,0.5);
+            transition: transform 0.3s ease;
+        }
+        .balloon-body:hover { transform: scale(1.1); }
+        .balloon-body .shine {
+            position: absolute;
+            width: 18px; height: 22px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            top: 15px; left: 16px;
+            transform: rotate(-20deg);
+        }
+        .balloon-knot {
+            width: 10px; height: 12px;
+            background: inherit;
+            margin: 0 auto;
+            border-radius: 0 0 4px 4px;
+            position: relative; top: -2px;
+        }
+        .balloon-string {
+            width: 1.5px; height: 55px;
+            background: #999;
+            margin: 0 auto;
+            border-radius: 1px;
+            animation: stringSway ease-in-out infinite;
+        }
+        @keyframes stringSway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(2deg); }
+        }
+        .balloon-wrapper.popping .balloon-body {
+            animation: popBurst 0.5s ease-out forwards;
+        }
+        .balloon-wrapper.popping .balloon-knot,
+        .balloon-wrapper.popping .balloon-string { opacity: 0; }
+        @keyframes popBurst {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        .pop-particle {
+            position: fixed; pointer-events: none; z-index: 6;
+            border-radius: 50%;
+            animation: particleFly 0.7s ease-out forwards;
+        }
+        @keyframes particleFly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--dx), var(--dy)) scale(0); opacity: 0; }
+        }
+
+        /* ========== WISH MODAL ========== */
+        .wish-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 20;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s;
+        }
+        .wish-overlay.active { opacity: 1; pointer-events: auto; }
+        .wish-card {
+            background: white; border-radius: 24px; padding: 35px 28px;
+            text-align: center; max-width: 400px; width: 90%;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+            animation: cardIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent; background-clip: padding-box;
+        }
+        .wish-card::before {
+            content: '';
+            position: absolute; inset: -2px; border-radius: 26px;
+            padding: 2px;
+            background: linear-gradient(135deg, #ff4d6d, #c77dff, #ffd166);
+            z-index: -1;
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+        }
+        @keyframes cardIn {
+            0% { transform: scale(0.3) translateY(40px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .wish-card .wish-emoji { font-size: 60px; margin-bottom: 10px; }
+        .wish-card .wish-text { font-size: 1.3em; font-weight: 600; color: #444; margin: 10px 0; line-height: 1.5; }
+        .wish-card .wish-from { font-size: 1em; color: #ff4d6d; font-weight: 700; margin-top: 8px; }
+        .wish-card .close-btn {
+            margin-top: 18px; padding: 10px 30px;
+            background: linear-gradient(135deg, #ff4d6d, #e63946);
+            color: white; border: none; border-radius: 50px;
+            font-weight: 600; cursor: pointer; box-shadow: 0 6px 20px rgba(255, 77, 109, 0.4);
+            transition: all 0.3s;
+        }
+        .wish-card .close-btn:hover { transform: translateY(-2px); }
+
+        /* ========== FOOTER ========== */
+        .alok-footer {
+            position: fixed; bottom: 15px; left: 0; width: 100%;
+            text-align: center; z-index: 15; font-size: 0.95em;
+            color: #ff4d6d; font-weight: 600; pointer-events: none;
+            opacity: 0; animation: footerFadeIn 2s ease-out forwards 2s;
+            text-shadow: 0 2px 10px rgba(255, 77, 109, 0.3);
+        }
+        @keyframes footerFadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 0.9; transform: translateY(0); }
+        }
+
+        .heart-drop {
+            position: fixed; pointer-events: none; z-index: 1;
+            font-size: 24px; animation: heartFall linear forwards;
+        }
+        @keyframes heartFall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 0.9; }
+            100% { transform: translateY(105vh) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 600px) {
+            .love-card { padding: 28px 20px; }
+            .love-card .name-display { font-size: 2em; }
+            .romantic-message .happy-text { font-size: 2em; }
+            .romantic-message .name-big { font-size: 2.6em; }
+            .sneha-photo-container { width: 110px; height: 110px; }
+            .balloon-body { width: 52px; height: 66px; }
+            .balloon-action-btn { padding: 12px 24px; font-size: 1em; bottom: 70px; }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="confettiCanvas"></canvas>
+
+    <div class="main-container" id="mainContainer">
+        <!-- Initial Card -->
+        <div class="love-card" id="initialCard">
+            <div class="icon-row">🎂</div>
+            <div class="name-display">Sneha</div>
+            <div class="subtitle">Tumhare Alok ki taraf se ek special surprise... 💝</div>
+            <div class="by-alok">— Alok ♥️</div>
+            <div class="click-hint">✨ Click Karo ✨</div>
+        </div>
+
+        <!-- Birthday Message with Photo -->
+        <div class="romantic-message" id="romanticMessage">
+            <!-- Sneha ki photo yahan lagao -->
+            <div class="sneha-photo-container">
+                <!-- ====== YAHAN PHOTO CHANGE KARO ====== -->
+                <!-- Agar photo same folder mein hai to src mein uska naam likho, jaise "sneha.jpg" -->
+                <img src="sneha-photo.jpg" alt="Sneha">
+            </div>
+            <span class="big-heart">🎂</span>
+            <div class="happy-text">Happy Birthday</div>
+            <div class="name-big">Sneha!</div>
+            <div class="date-tag">🌟 3 August 🌟</div>
+            <div class="balloon-hint">🎈 Neeche balloons pe click karo ya button dabao! 🎈</div>
+            <div class="alok-love">With endless love, Alok ♥️</div>
+        </div>
+    </div>
+
+    <!-- Balloons Container -->
+    <div class="balloons-container" id="balloonsContainer"></div>
+
+    <!-- Balloon Action Button -->
+    <button class="balloon-action-btn" id="balloonActionBtn">🎈 Release a Birthday Balloon</button>
+
+    <!-- Wish Modal -->
+    <div class="wish-overlay" id="wishOverlay">
+        <div class="wish-card">
+            <div class="wish-emoji" id="wishEmoji"></div>
+            <div class="wish-text" id="wishText"></div>
+            <div class="wish-from">With love, Alok ♥️</div>
+            <button class="close-btn" id="closeWishBtn">🎈 Aur Balloons Dekho!</button>
+        </div>
+    </div>
+
+    <div class="alok-footer">✨ Made with <span style="color:red;">♥️</span> by Alok ✨</div>
+
+    <script>
+        (function() {
+            const initialCard = document.getElementById('initialCard');
+            const romanticMessage = document.getElementById('romanticMessage');
+            const balloonsContainer = document.getElementById('balloonsContainer');
+            const wishOverlay = document.getElementById('wishOverlay');
+            const wishEmoji = document.getElementById('wishEmoji');
+            const wishText = document.getElementById('wishText');
+            const closeWishBtn = document.getElementById('closeWishBtn');
+            const confettiCanvas = document.getElementById('confettiCanvas');
+            const ctx = confettiCanvas.getContext('2d');
+            const balloonActionBtn = document.getElementById('balloonActionBtn');
+
+            let greetingRevealed = false;
+            let activeBalloons = [];
+            let maxBalloons = 7;
+            let confettiPieces = [];
+            let isConfettiRunning = true;
+
+            const wishes = [
+                { text: "Happy Birthday to the most amazing friend in the whole world! Tum jaisi dost milna blessing hai. 🎂✨", emoji: "🎉" },
+                { text: "Sneha, you make life so much brighter just by being in it! Stay awesome forever. 💖🌟", emoji: "💝" },
+                { text: "Wishing you all the happiness, laughter, and success in the world! You deserve it all. 😊💫", emoji: "🌈" },
+                { text: "May all your dreams come true, beautiful! Yeh saal tumhara best saal ho! 🎯✨", emoji: "💎" },
+                { text: "You're the best friend anyone could ever ask for. Thank you for being YOU! 🤗💕", emoji: "🦋" },
+                { text: "Have a fabulous birthday filled with joy, cake, and everything nice! 🍰🎈", emoji: "🎀" },
+                { text: "Stay as wonderful, kind, and gorgeous as you are, Sneha! Duniya tumhari ho! 🌸👑", emoji: "👑" },
+                { text: "Cheers to another year of awesome memories together! Love you loads! 🥂💗", emoji: "🥂" },
+                { text: "Tum jaisi dost kismat walon ko milti hai. Happy Birthday meri favorite insaan! 💝🤩", emoji: "🤩" },
+                { text: "Shine bright like the star you are, Sneha! Today is YOUR day! 🌟🎂", emoji: "⭐" },
+                { text: "Sending you a sky full of love and a heart full of wishes! Happy Birthday! 💖☁️", emoji: "💌" },
+                { text: "Tumhari smile duniya ki sabse khoobsurat cheez hai. Keep smiling always! 😍🌸", emoji: "😍" },
+                { text: "Happy Birthday to my partner-in-crime, my vibe, my forever bestie! 🎉💃", emoji: "💃" },
+                { text: "May this birthday bring you everything you've been wishing for! Tum deserve karti ho! 🎁✨", emoji: "🎁" },
+                { text: "You're not just a friend, you're family. Happy Birthday, Sneha! Love you! 🏠💕", emoji: "💖" },
+                { text: "From Alok, with all my heart — Happy Birthday, Sneha! ♥️🎈", emoji: "💌" },
+                { text: "Sneha, har pal special hai tumhare saath. Khush raho hamesha! – Alok 💖", emoji: "✨" },
+            ];
+            let usedWishIndices = [];
+
+            function getRandomWish() {
+                if (usedWishIndices.length >= wishes.length) usedWishIndices = [];
+                let available = wishes.filter((_, i) => !usedWishIndices.includes(i));
+                const rand = available[Math.floor(Math.random() * available.length)];
+                usedWishIndices.push(wishes.indexOf(rand));
+                return rand;
+            }
+
+            const balloonColors = [
+                { bg: 'radial-gradient(circle at 30% 25%, #ff9ebb, #ff6b8a, #e04070)', knot: '#e04070' },
+                { bg: 'radial-gradient(circle at 30% 25%, #d4a5ff, #c77dff, #9b4dca)', knot: '#9b4dca' },
+                { bg: 'radial-gradient(circle at 30% 25%, #ffe08a, #ffd166, #e0a800)', knot: '#e0a800' },
+                { bg: 'radial-gradient(circle at 30% 25%, #ffb5c5, #ff8cab, #e0607a)', knot: '#e0607a' },
+                { bg: 'radial-gradient(circle at 30% 25%, #a0e8f5, #7bdff2, #4db8c9)', knot: '#4db8c9' },
+                { bg: 'radial-gradient(circle at 30% 25%, #ffc9b8, #ffb5a7, #e09080)', knot: '#e09080' },
+                { bg: 'radial-gradient(circle at 30% 25%, #b8f5e0, #06d6a0, #04a878)', knot: '#04a878' },
+                { bg: 'radial-gradient(circle at 30% 25%, #ffd0e0, #ffc8dd, #e8a0b8)', knot: '#e8a0b8' },
+                { bg: 'radial-gradient(circle at 30% 25%, #ffaaaa, #ff6b6b, #d04444)', knot: '#d04444' },
+                { bg: 'radial-gradient(circle at 30% 25%, #c8d6ff, #a0b4ff, #7088e0)', knot: '#7088e0' },
+            ];
+
+            function resizeCanvas() {
+                confettiCanvas.width = window.innerWidth;
+                confettiCanvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            function createConfettiPiece(x, y) {
+                const colors = ['#ff4d6d', '#ff8fa3', '#ffb3c6', '#ffd166', '#c77dff', '#ff0a54', '#ff7096'];
+                return {
+                    x: x ?? Math.random() * confettiCanvas.width,
+                    y: y ?? -20 - Math.random() * 60,
+                    w: 4 + Math.random() * 10,
+                    h: 3 + Math.random() * 7,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    speed: 1.5 + Math.random() * 3.5,
+                    wobble: Math.random() * 2 - 1,
+                    wobbleSpeed: 0.02 + Math.random() * 0.04,
+                    rotation: Math.random() * 360,
+                    rotationSpeed: (Math.random() - 0.5) * 5,
+                    opacity: 0.6 + Math.random() * 0.4,
+                    shape: Math.random() > 0.4 ? 'heart' : 'circle',
+                };
+            }
+
+            for (let i = 0; i < 80; i++) {
+                const piece = createConfettiPiece();
+                piece.y = Math.random() * confettiCanvas.height;
+                confettiPieces.push(piece);
+            }
+
+            function burstConfetti(x, y, count = 30) {
+                for (let i = 0; i < count; i++) {
+                    const piece = createConfettiPiece(x, y);
+                    piece.speed = 4 + Math.random() * 8;
+                    piece.vx = (Math.random() - 0.5) * 10;
+                    piece.vy = (Math.random() - 0.5) * 10 - 4;
+                    piece._burst = true;
+                    piece._burstLife = 0;
+                    piece._burstMaxLife = 40 + Math.random() * 40;
+                    confettiPieces.push(piece);
+                }
+            }
+
+            function drawHeart(ctx, x, y, size, color) {
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(0, size/4);
+                ctx.bezierCurveTo(size/2, -size/2, size, size/4, 0, size);
+                ctx.bezierCurveTo(-size, size/4, -size/2, -size/2, 0, size/4);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function updateConfetti() {
+                if (!isConfettiRunning) return;
+                ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+                for (let i = confettiPieces.length - 1; i >= 0; i--) {
+                    const p = confettiPieces[i];
+                    if (p._burst) {
+                        p._burstLife++;
+                        p.x += p.vx;
+                        p.y += p.vy;
+                        p.vy += 0.2;
+                        p.opacity = Math.max(0, 1 - p._burstLife / p._burstMaxLife);
+                        if (p.opacity <= 0) { confettiPieces.splice(i, 1); continue; }
+                    } else {
+                        p.y += p.speed;
+                        p.wobble += p.wobbleSpeed;
+                        p.x += Math.sin(p.wobble) * 0.8;
+                        p.rotation += p.rotationSpeed;
+                        if (p.y > confettiCanvas.height + 30) {
+                            p.y = -30; p.x = Math.random() * confettiCanvas.width;
+                        }
+                    }
+                    ctx.save();
+                    ctx.globalAlpha = p.opacity;
+                    if (p.shape === 'heart') {
+                        drawHeart(ctx, p.x, p.y, p.w, p.color);
+                    } else {
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.rotation * Math.PI / 180);
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+                    }
+                    ctx.restore();
+                }
+                if (confettiPieces.filter(p => !p._burst).length < 60 && isConfettiRunning) {
+                    for (let i=0; i<5; i++) confettiPieces.push(createConfettiPiece());
+                }
+                requestAnimationFrame(updateConfetti);
+            }
+            updateConfetti();
+
+            function createHeartDrop() {
+                const heart = document.createElement('span');
+                heart.className = 'heart-drop';
+                heart.textContent = ['💕', '💖', '💗', '💝', '❤️', '🩷'][Math.floor(Math.random()*6)];
+                heart.style.left = Math.random()*90 + '%';
+                heart.style.fontSize = (18+Math.random()*20)+'px';
+                heart.style.animationDuration = (5+Math.random()*8)+'s';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 10000);
+            }
+            setInterval(createHeartDrop, 3000);
+            for(let i=0;i<6;i++) setTimeout(createHeartDrop, i*600);
+
+            function createBalloon() {
+                if (!greetingRevealed || activeBalloons.length >= maxBalloons) return;
+                const colorData = balloonColors[Math.floor(Math.random()*balloonColors.length)];
+                const left = 5 + Math.random()*85;
+                const dur = 9 + Math.random()*10;
+                const size = window.innerWidth<=600 ? 48+Math.random()*10 : 60+Math.random()*20;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'balloon-wrapper';
+                wrapper.style.left = left+'%';
+                wrapper.style.animationDuration = dur+'s';
+
+                const bob = document.createElement('div');
+                bob.className = 'balloon-bob';
+                bob.style.animationDuration = (2+Math.random()*3)+'s';
+
+                const body = document.createElement('div');
+                body.className = 'balloon-body';
+                body.style.background = colorData.bg;
+                body.style.width = size+'px';
+                body.style.height = (size*1.26)+'px';
+                const shine = document.createElement('div');
+                shine.className = 'shine';
+                body.appendChild(shine);
+
+                const knot = document.createElement('div');
+                knot.className = 'balloon-knot';
+                knot.style.background = colorData.knot;
+                const string = document.createElement('div');
+                string.className = 'balloon-string';
+
+                bob.append(body, knot, string);
+                wrapper.appendChild(bob);
+                balloonsContainer.appendChild(wrapper);
+                activeBalloons.push(wrapper);
+
+                wrapper.addEventListener('click', (e) => popBalloon(wrapper, e));
+                wrapper.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    if(!wrapper.classList.contains('popping')) popBalloon(wrapper, e.changedTouches[0]);
+                });
+
+                setTimeout(() => removeBalloon(wrapper), dur*1000+500);
+            }
+
+            function removeBalloon(wrapper) {
+                if(!wrapper || wrapper.classList.contains('popping')) return;
+                wrapper.style.opacity = '0';
+                setTimeout(() => {
+                    wrapper.remove();
+                    activeBalloons = activeBalloons.filter(b => b !== wrapper);
+                }, 500);
+            }
+
+            function popBalloon(wrapper, event) {
+                if(wrapper.classList.contains('popping')) return;
+                wrapper.classList.add('popping');
+                const rect = wrapper.getBoundingClientRect();
+                const cx = rect.left + rect.width/2;
+                const cy = rect.top + rect.height/3;
+
+                for(let i=0;i<18;i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'pop-particle';
+                    particle.style.left = cx+'px';
+                    particle.style.top = cy+'px';
+                    particle.style.width = (4+Math.random()*8)+'px';
+                    particle.style.height = particle.style.width;
+                    particle.style.background = ['#ff6b8a','#c77dff','#ffd166','#7bdff2','#ffb5a7','#06d6a0','#ff8cab','#fff'][Math.floor(Math.random()*8)];
+                    particle.style.setProperty('--dx', (Math.random()-0.5)*160+'px');
+                    particle.style.setProperty('--dy', (Math.random()-0.5)*160-20+'px');
+                    document.body.appendChild(particle);
+                    setTimeout(() => particle.remove(), 800);
+                }
+                burstConfetti(cx, cy, 30);
+
+                const wish = getRandomWish();
+                wishEmoji.textContent = wish.emoji;
+                wishText.textContent = wish.text;
+                wishOverlay.classList.add('active');
+
+                setTimeout(() => {
+                    wrapper.remove();
+                    activeBalloons = activeBalloons.filter(b => b !== wrapper);
+                    setTimeout(() => { if(greetingRevealed && activeBalloons.length < maxBalloons) createBalloon(); }, 1200);
+                }, 500);
+            }
+
+            function closeWishModal() {
+                wishOverlay.classList.remove('active');
+            }
+            closeWishBtn.addEventListener('click', closeWishModal);
+            wishOverlay.addEventListener('click', (e) => { if(e.target === wishOverlay) closeWishModal(); });
+
+            balloonActionBtn.addEventListener('click', () => {
+                if (!greetingRevealed) return;
+                if (activeBalloons.length < maxBalloons) {
+                    createBalloon();
+                    balloonActionBtn.style.transform = 'translateX(-50%) scale(0.9)';
+                    setTimeout(() => { balloonActionBtn.style.transform = ''; }, 150);
+                } else {
+                    balloonActionBtn.textContent = '🎈 Max balloons reached!';
+                    setTimeout(() => { balloonActionBtn.textContent = '🎈 Release a Birthday Balloon'; }, 1000);
+                }
+            });
+
+            function revealGreeting() {
+                if(greetingRevealed) return;
+                greetingRevealed = true;
+                initialCard.classList.add('hidden');
+                const rect = initialCard.getBoundingClientRect();
+                const cx = rect.left + rect.width/2;
+                const cy = rect.top + rect.height/2;
+                burstConfetti(cx, cy, 70);
+                setTimeout(() => {
+                    romanticMessage.classList.add('revealed');
+                    balloonActionBtn.classList.add('visible');
+                }, 400);
+                balloonsContainer.classList.add('active');
+                setTimeout(() => { for(let i=0;i<5;i++) setTimeout(createBalloon, i*500); }, 900);
+                setInterval(() => { if(greetingRevealed && activeBalloons.length < maxBalloons-1) createBalloon(); }, 3500);
+            }
+
+            initialCard.addEventListener('click', revealGreeting);
+            initialCard.addEventListener('touchend', (e) => { e.preventDefault(); revealGreeting(); });
+
+            document.addEventListener('keydown', (e) => {
+                if((e.key==='Enter'||e.key===' ') && !greetingRevealed) { e.preventDefault(); revealGreeting(); }
+                if(e.key==='Escape') closeWishModal();
+            });
+
+            console.log('🎂🎈 Happy Birthday Sneha with photo! 🎈🎂');
+        })();
+    </script>
+</body>
+</html>
